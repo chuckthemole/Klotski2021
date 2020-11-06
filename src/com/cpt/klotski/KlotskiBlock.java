@@ -35,10 +35,10 @@ public class KlotskiBlock {
 			createBlock((int) p.getX(), (int) p.getY(), 200, 200, Color.DARKRED);
 			break;
 		case "Vertical Rectangle":
-			createBlock((int) p.getX(), (int) p.getY(), 100, 100, Color.RED);
+			createBlock((int) p.getX(), (int) p.getY(), 100, 200, Color.RED);
 			break;
 		case "Horizontal Rectangle":
-			createBlock((int) p.getX(), (int) p.getY(), 100, 100, Color.RED);
+			createBlock((int) p.getX(), (int) p.getY(), 200, 100, Color.RED);
 			break;
 		case "Block Mouse":
 			createBlock((int) p.getX(), (int) p.getY(), 100, 100, Color.TRANSPARENT);
@@ -68,10 +68,10 @@ public class KlotskiBlock {
 			createBlock(x, y, 200, 200, Color.DARKRED);
 			break;
 		case "Vertical Rectangle":
-			createBlock(x, y, 100, 100, Color.RED);
+			createBlock(x, y, 100, 200, Color.RED);
 			break;
 		case "Horizontal Rectangle":
-			createBlock(x, y, 100, 100, Color.RED);
+			createBlock(x, y, 200, 100, Color.RED);
 			break;
 		case "Block Mouse":
 			createBlock(x, y, 100, 100, Color.TRANSPARENT);

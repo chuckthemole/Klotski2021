@@ -2,14 +2,14 @@ package com.cpt.klotski;
 
 //import java.io.FileInputStream;
 import java.io.File;
+import javafx.scene.media.Media;  
+import javafx.scene.media.MediaPlayer;  
 //import java.io.InputStream;
 
 //import javax.sound.sampled.AudioSystem;
 //import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStream;
 
