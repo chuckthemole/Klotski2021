@@ -14,16 +14,19 @@ import javafx.stage.Stage;
  */
 public class Klotski extends Application {
 	private final String musicPath = "//Music//song2.MP3";
-	private static KlotskiBoard mainBoard = new KlotskiBoard();
+	private static KlotskiBoard mainBoard;
+	private Scene scene;
 	
     @Override
     public void start(Stage s) throws Exception{
         System.out.print("Start called...");
+        mainBoard = new KlotskiBoard();
     	//playMusic(musicPath);
-        buildStage();          
+        buildStage(s); 
+        addListeners();
     }
     
-    public static void playMusic(String s) {
+    private static void playMusic(String s) {
     	if (OperatingSystem.isWindows()) {
     		s.replace('/', '\\');
     	}
@@ -35,8 +38,7 @@ public class Klotski extends Application {
     	}
     }
     
-    public static void buildStage() {
-    	Stage stage = new Stage();
+    private void buildStage(Stage stage) {
         Pane blocksPane = new Pane();
 
     	mainBoard = new KlotskiBoard();
@@ -52,7 +54,7 @@ public class Klotski extends Application {
         blocksPane.setLayoutY(40);
         
     	Group root = new Group(mainPane);
-    	Scene scene = new Scene(root);
+    	scene = new Scene(root);
         scene.setFill(Paint.valueOf("Black"));
         stage.setOnCloseRequest(e -> System.exit(0));       
         stage.setTitle("Klotski");
@@ -63,6 +65,10 @@ public class Klotski extends Application {
         stage.show(); 
     }
 
+    private void addListeners() {
+    	
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }
