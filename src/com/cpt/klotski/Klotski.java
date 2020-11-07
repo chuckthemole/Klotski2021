@@ -21,11 +21,13 @@ public class Klotski extends Application {
 	private static KlotskiBoard mainBoard;
 	private Scene scene;
     private BlockDrag[] blockDrag;
+    private static boolean mouseActive;
 	
     @Override
     public void start(Stage s) throws Exception{
         System.out.print("Start called...");
         mainBoard = new KlotskiBoard();
+        enableMouse();
     	//playMusic(musicPath);
         buildStage(s); 
         addListeners();
@@ -74,8 +76,20 @@ public class Klotski extends Application {
     	blockDrag = new BlockDrag[10];
     	int i;
         for (i = 9; i >= 0; i--) {
-            blockDrag[i] = new BlockDrag(mainBoard.getBlocks()[i], mainBoard); 
+            blockDrag[i] = new BlockDrag(mainBoard.getBlocks()[i], mainBoard, mouseActive); 
         }  
+    }
+    
+    public boolean isMouseActive() {
+    	return mouseActive;
+    }
+    
+    public void disableMouse() {
+    	mouseActive = false;
+    }
+    
+    public void enableMouse() {
+    	mouseActive = true;
     }
     
     public static void main(String[] args) {

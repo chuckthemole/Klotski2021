@@ -10,29 +10,22 @@ import java.awt.Point;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Cursor;
 
-
 /**
  * 
- * @author chuck
- * 
- * MouseDrag handles each block's mouse event. 
+ * @author Chuck
  *
  */
-
 public class BlockDrag {
 	private KlotskiBlock block;
-    private KlotskiBoard currentBoard;
-    private static boolean mouseActive = true;
    
     /**
      * 
      * @param b is a block on the klotskiBoard
      * @param klotskiBoard is the current KlotskiBoard object
      */
-    BlockDrag(KlotskiBlock b, KlotskiBoard klotskiBoard) {
+    BlockDrag(KlotskiBlock b, KlotskiBoard klotskiBoard, boolean mouseActive) {
     	block = b;
     	Rectangle currentBlock = b.getRec();
-    	currentBoard = klotskiBoard;
     	
         b.getRec().setCursor(Cursor.HAND);
         
@@ -77,28 +70,12 @@ public class BlockDrag {
         	double x = currentBlock.getX();
         	double y = currentBlock.getY();
         	
-        	currentBoard.setBlockPosition(block, new Point((int) x, (int) y));
+        	klotskiBoard.setBlockPosition(block, new Point((int) x, (int) y));
         	currentBlock.toBack();
         });
     }
     
     public KlotskiBlock getBlock() {
     	return block;
-    }
-    
-    public KlotskiBoard getBoard() {
-    	return currentBoard;
-    }
-    
-    public boolean isMouseActive() {
-    	return mouseActive;
-    }
-    
-    public void disableMouse() {
-    	mouseActive = false;
-    }
-    
-    public void enableMouse() {
-    	mouseActive = true;
     }
 }
