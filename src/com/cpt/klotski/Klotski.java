@@ -1,6 +1,10 @@
 package com.cpt.klotski;
 
+import com.sun.javafx.geom.Vec2d;
+
+
 import javafx.application.Application;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -16,6 +20,7 @@ public class Klotski extends Application {
 	private final String musicPath = "//Music//song2.MP3";
 	private static KlotskiBoard mainBoard;
 	private Scene scene;
+    private BlockDrag[] blockDrag;
 	
     @Override
     public void start(Stage s) throws Exception{
@@ -66,7 +71,11 @@ public class Klotski extends Application {
     }
 
     private void addListeners() {
-    	
+    	blockDrag = new BlockDrag[10];
+    	int i;
+        for (i = 9; i >= 0; i--) {
+            blockDrag[i] = new BlockDrag(mainBoard.getBlocks()[i], mainBoard); 
+        }  
     }
     
     public static void main(String[] args) {

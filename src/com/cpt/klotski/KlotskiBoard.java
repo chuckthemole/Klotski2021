@@ -1,5 +1,7 @@
 package com.cpt.klotski;
 
+import java.awt.Point;
+
 /**
  * 
  * @author Chuck
@@ -43,5 +45,10 @@ public class KlotskiBoard {
     
     public KlotskiBlock[] getBlocks() {
     	return blocks;
+    }
+    
+    public int setBlockPosition(KlotskiBlock b, Point p) {
+    	//TODO
+    	return 1;
     }
 }
