@@ -8,7 +8,8 @@ import java.awt.Point;
  *
  */
 public class KlotskiBoard {      
-    private KlotskiBlock[] blocks;
+    private static KlotskiBlock[] blocks;
+    
     private static final int NUMBER_OF_BLOCKS = 10;
     private static final int SMALL_SQUARE_1 = 0;
     private static final int SMALL_SQUARE_2 = 1;
@@ -20,6 +21,8 @@ public class KlotskiBoard {
     private static final int VERTICAL_BLOCK_4 = 7;
     private static final int HORIZONTAL_BLOCK = 8;
     private static final int BIG_SQUARE = 9;
+    
+    private
 
     KlotskiBoard() {
         blocks = new KlotskiBlock[NUMBER_OF_BLOCKS];
