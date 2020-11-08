@@ -59,7 +59,40 @@ public class KlotskiBoard {
     }
     
     public int setBlockPosition(KlotskiBlock b, Point p) {
-    	//TODO
-    	return 1;
+    	int flag = -1;
+    	
+    	//Maybe call method setBoardPositions
+    	
+    	flag = movingLogic(b.getBlockType());
+    	
+    	if (flag == 1) {
+    		
+    	}
+    	else if (flag == -1) {
+    		b.setPosition(b.getPosition());
+    	}
+    	else {
+    		// Winning condition TODO
+    	}
+    	
+    	return flag;
+    }
+    
+    private int movingLogic(String blockType) {
+    	
+    	switch (blockType) {
+    	case "Small Square":
+    		break;
+    	case "Vertical Rectangle":
+    		break;
+    	case "Horizontal Rectangle":
+    		break;
+    	case "Big Square":
+    		break;
+    	default:
+    		System.out.println("No block type!");
+    	}
+    	
+    	return -1;
     }
 }

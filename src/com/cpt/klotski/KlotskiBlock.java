@@ -113,6 +113,35 @@ public class KlotskiBlock {
 		return blockIdentifier;
 	}
 	
+	/**
+	 * 
+	 * @return the block position
+	 */
+	public Point getPosition() {
+		return position;
+	}
+	
+	/**
+	 * 
+	 * @param p the point for block to be set
+	 */
+	public void setPosition(Point p) {
+		position = p;
+		block.setX(p.getX());
+		block.setY(p.getY());
+	}
+	
+	/**
+	 * 
+	 * @param x the x-coordinate for block to be set
+	 * @param y the y-coordinate for block to be set
+	 */
+	public void setPosition(int x, int y) {
+		position = new Point(x, y);
+		this.getRec().setX(x);
+		this.getRec().setY(y);
+	}
+	
 	private void createBlock(int x, int y, int x_dimension, int y_dimension, Color fillColor) {
 		block = new Rectangle(x, y, x_dimension, y_dimension);
 	    block.setStroke(Color.BLACK);
