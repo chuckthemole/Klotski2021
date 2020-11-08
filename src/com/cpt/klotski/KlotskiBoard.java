@@ -34,23 +34,15 @@ public class KlotskiBoard {
 
     KlotskiBoard() {
         blocks = new KlotskiBlock[NUMBER_OF_BLOCKS];
-        
-        //one by one blocks
         blocks[SMALL_SQUARE_1] = new KlotskiBlock("Small Square", COLUMN_FOUR, ROW_FIVE);  
         blocks[SMALL_SQUARE_2] = new KlotskiBlock("Small Square", COLUMN_TWO, ROW_FOUR);
         blocks[SMALL_SQUARE_3] = new KlotskiBlock("Small Square", COLUMN_THREE, ROW_FOUR);
         blocks[SMALL_SQUARE_4] = new KlotskiBlock("Small Square", COLUMN_ONE, ROW_FIVE);
-        
-        //one by two blocks 
         blocks[VERTICAL_BLOCK_1] = new KlotskiBlock("Vertical Rectangle", COLUMN_ONE, ROW_ONE);          
         blocks[VERTICAL_BLOCK_2] = new KlotskiBlock("Vertical Rectangle", COLUMN_ONE, ROW_THREE);         
         blocks[VERTICAL_BLOCK_3] = new KlotskiBlock("Vertical Rectangle", COLUMN_FOUR, ROW_ONE);       
-        blocks[VERTICAL_BLOCK_4] = new KlotskiBlock("Vertical Rectangle", COLUMN_FOUR, ROW_THREE);  
-        
-        //two by one block 
+        blocks[VERTICAL_BLOCK_4] = new KlotskiBlock("Vertical Rectangle", COLUMN_FOUR, ROW_THREE);      
         blocks[HORIZONTAL_BLOCK] = new KlotskiBlock("Horizontal Rectangle", COLUMN_TWO, ROW_THREE); 
-        
-        //two by two block        
         blocks[BIG_SQUARE] = new KlotskiBlock("Big Square", COLUMN_TWO, ROW_ONE); 
     }
     
@@ -58,6 +50,13 @@ public class KlotskiBoard {
     	return blocks;
     }
     
+    /**
+     * Moves a Klotski Block, b, to a position, p, if the move is a legal move. 
+     * 
+     * @param b block to have position set
+     * @param p point to set the block
+     * @return
+     */
     public int setBlockPosition(KlotskiBlock b, Point p) {
     	int flag = -1;
     	
@@ -72,7 +71,6 @@ public class KlotskiBoard {
     		b.setPosition(b.getPosition());
     	}
     	else {
-    		// Winning condition TODO
     	}
     	
     	return flag;

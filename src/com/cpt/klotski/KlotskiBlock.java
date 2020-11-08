@@ -15,6 +15,9 @@ public class KlotskiBlock {
 	private Point position;
 	private static int numberOfBlocks = 0;
 	private int blockIdentifier;
+	private int width;
+	private int height;
+	private Point previousPosition;
 	
 	/**
 	 * 
@@ -99,6 +102,22 @@ public class KlotskiBlock {
 	
 	/**
 	 * 
+	 * @return width of block
+	 */
+	public int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * 
+	 * @return height of block
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * 
 	 * @return the rectangle of the block
 	 */
 	public Rectangle getRec() {
@@ -123,6 +142,14 @@ public class KlotskiBlock {
 	
 	/**
 	 * 
+	 * @return the block's previous position
+	 */
+	public Point getPreviousPosition() {
+		return position;
+	}
+	
+	/**
+	 * 
 	 * @param p the point for block to be set
 	 */
 	public void setPosition(Point p) {
@@ -142,9 +169,50 @@ public class KlotskiBlock {
 		this.getRec().setY(y);
 	}
 	
+	/**
+	 * 
+	 * @param p the point for block's previous position to be set
+	 */
+	public void setPreviousPosition(Point p) {
+		position = p;
+		block.setX(p.getX());
+		block.setY(p.getY());
+	}
+	
+	/**
+	 * 
+	 * @param x the x-coordinate for block's previous position to be set
+	 * @param y the y-coordinate for block's previous position to be set
+	 */
+	public void setPreviousPosition(int x, int y) {
+		position = new Point(x, y);
+		this.getRec().setX(x);
+		this.getRec().setY(y);
+	}
+	
+	/**
+	 * 
+	 * @param x the x-coordinate for block to be set
+	 */
+	public void setX(int x) {
+		position = new Point(x, (int) position.getY());
+		this.getRec().setX(x);
+	}
+	
+	/**
+	 * 
+	 * @param x the x-coordinate for block to be set
+	 */
+	public void setY(int y) {
+		position = new Point((int) position.getX(), y);
+		this.getRec().setY(y);
+	}
+	
 	private void createBlock(int x, int y, int x_dimension, int y_dimension, Color fillColor) {
 		block = new Rectangle(x, y, x_dimension, y_dimension);
 	    block.setStroke(Color.BLACK);
 	    block.setFill(fillColor);
+	    height = y_dimension;
+	    width = x_dimension;
 	}
 }
