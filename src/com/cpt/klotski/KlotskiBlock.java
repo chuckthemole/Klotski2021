@@ -213,6 +213,6 @@ public class KlotskiBlock {
 	    block.setStroke(Color.BLACK);
 	    block.setFill(fillColor);
 	    height = y_dimension;
-	    width = x_dimension;
+	    width = x_dimension;	   
 	}
 }
