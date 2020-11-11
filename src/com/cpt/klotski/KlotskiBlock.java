@@ -17,7 +17,8 @@ public class KlotskiBlock {
 	private int blockIdentifier;
 	private int width;
 	private int height;
-	private Point previousPosition;
+	private int blockColumn;
+	private int blockRow;
 	
 	/**
 	 * 
@@ -29,6 +30,7 @@ public class KlotskiBlock {
 		position = p;
 		blockIdentifier = numberOfBlocks;
 		numberOfBlocks++;
+
 		
 		switch (type) {
 		case "Small Square":
@@ -150,6 +152,22 @@ public class KlotskiBlock {
 	
 	/**
 	 * 
+	 * @return block's column
+	 */
+	public int getBlockColumn() {
+		return blockColumn;
+	}
+	
+	/**
+	 * 
+	 * @return block's row
+	 */
+	public int getRowColumn() {
+		return blockRow;
+	}
+	
+	/**
+	 * 
 	 * @param p the point for block to be set
 	 */
 	public void setPosition(Point p) {
@@ -206,6 +224,30 @@ public class KlotskiBlock {
 	public void setY(int y) {
 		position = new Point((int) position.getX(), y);
 		this.getRec().setY(y);
+	}
+	
+	/**
+	 * 
+	 * @param column is the value to set blockColumn
+	 */
+	public void setBlockColumn(int column) {
+		blockColumn = column;
+	}
+	
+	/**
+	 * 
+	 * @param row is the value to set blockRow
+	 */
+	public void setBlockRow(int row) {
+		blockRow = row;
+	}
+	
+	/**
+	 * 
+	 * @param n is the int to set numberOfBlocks
+	 */
+	public static void setNumberOfBlocks(int n) {
+		numberOfBlocks = n;
 	}
 	
 	private void createBlock(int x, int y, int x_dimension, int y_dimension, Color fillColor) {

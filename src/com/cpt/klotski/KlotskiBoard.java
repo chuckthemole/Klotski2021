@@ -9,6 +9,10 @@ import java.awt.Point;
  */
 public class KlotskiBoard {      
     private static KlotskiBlock[] blocks;
+    private static int[][] boardPositions;
+    
+    private final int ROWS = 5;
+    private final int COLUMNS = 4;
     
     private static final int NUMBER_OF_BLOCKS = 10;
     private static final int SMALL_SQUARE_1 = 0;
@@ -31,9 +35,12 @@ public class KlotskiBoard {
     private final int COLUMN_TWO = 100;
     private final int COLUMN_THREE = 200;
     private final int COLUMN_FOUR = 300;
+    
+    private final int EMPTY_SPACE = -1;
 
     KlotskiBoard() {
         blocks = new KlotskiBlock[NUMBER_OF_BLOCKS];
+        KlotskiBlock.setNumberOfBlocks(0);
         blocks[SMALL_SQUARE_1] = new KlotskiBlock("Small Square", COLUMN_FOUR, ROW_FIVE);  
         blocks[SMALL_SQUARE_2] = new KlotskiBlock("Small Square", COLUMN_TWO, ROW_FOUR);
         blocks[SMALL_SQUARE_3] = new KlotskiBlock("Small Square", COLUMN_THREE, ROW_FOUR);
@@ -44,8 +51,35 @@ public class KlotskiBoard {
         blocks[VERTICAL_BLOCK_4] = new KlotskiBlock("Vertical Rectangle", COLUMN_FOUR, ROW_THREE);      
         blocks[HORIZONTAL_BLOCK] = new KlotskiBlock("Horizontal Rectangle", COLUMN_TWO, ROW_THREE); 
         blocks[BIG_SQUARE] = new KlotskiBlock("Big Square", COLUMN_TWO, ROW_ONE); 
+        
+        boardPositions = new int[COLUMNS][ROWS];
+        boardPositions[COLUMN_FOUR / 100][ROW_FIVE / 100] = blocks[SMALL_SQUARE_1].getBlockIdentifier();
+        boardPositions[COLUMN_TWO / 100][ROW_FOUR / 100] = blocks[SMALL_SQUARE_2].getBlockIdentifier();
+        boardPositions[COLUMN_THREE / 100][ROW_FOUR / 100] = blocks[SMALL_SQUARE_3].getBlockIdentifier();
+        boardPositions[COLUMN_ONE / 100][ROW_FIVE / 100] = blocks[SMALL_SQUARE_4].getBlockIdentifier();
+        boardPositions[COLUMN_ONE / 100][ROW_ONE / 100] = blocks[VERTICAL_BLOCK_1].getBlockIdentifier();
+        boardPositions[COLUMN_ONE / 100][ROW_TWO / 100] = blocks[VERTICAL_BLOCK_1].getBlockIdentifier();
+        boardPositions[COLUMN_ONE / 100][ROW_THREE / 100] = blocks[VERTICAL_BLOCK_2].getBlockIdentifier();
+        boardPositions[COLUMN_ONE / 100][ROW_FOUR / 100] = blocks[VERTICAL_BLOCK_2].getBlockIdentifier();
+        boardPositions[COLUMN_FOUR / 100][ROW_ONE / 100] = blocks[VERTICAL_BLOCK_3].getBlockIdentifier();
+        boardPositions[COLUMN_FOUR / 100][ROW_TWO / 100] = blocks[VERTICAL_BLOCK_3].getBlockIdentifier();
+        boardPositions[COLUMN_FOUR / 100][ROW_THREE / 100] = blocks[VERTICAL_BLOCK_4].getBlockIdentifier();
+        boardPositions[COLUMN_FOUR / 100][ROW_FOUR / 100] = blocks[VERTICAL_BLOCK_4].getBlockIdentifier();
+        boardPositions[COLUMN_TWO / 100][ROW_THREE / 100] = blocks[HORIZONTAL_BLOCK].getBlockIdentifier();
+        boardPositions[COLUMN_THREE / 100][ROW_THREE / 100] = blocks[HORIZONTAL_BLOCK].getBlockIdentifier();
+        boardPositions[COLUMN_TWO / 100][ROW_ONE / 100] = blocks[BIG_SQUARE].getBlockIdentifier();
+        boardPositions[COLUMN_TWO / 100][ROW_TWO / 100] = blocks[BIG_SQUARE].getBlockIdentifier();
+        boardPositions[COLUMN_THREE / 100][ROW_ONE / 100] = blocks[BIG_SQUARE].getBlockIdentifier();
+        boardPositions[COLUMN_THREE / 100][ROW_TWO / 100] = blocks[BIG_SQUARE].getBlockIdentifier();
+        boardPositions[COLUMN_TWO / 100][ROW_FIVE / 100] = EMPTY_SPACE;
+        boardPositions[COLUMN_THREE / 100][ROW_FIVE / 100] = EMPTY_SPACE;
+        printBoardPositions();
     }
     
+    /**
+     * 
+     * @return the array of blocks
+     */
     public KlotskiBlock[] getBlocks() {
     	return blocks;
     }
@@ -74,6 +108,28 @@ public class KlotskiBoard {
     	}
     	
     	return flag;
+    }
+    
+    /**
+     * Prints the current board positions
+     */
+    public void printBoardPositions() {
+    	int i, j;
+    	
+    	System.out.println("\nBoard Positions:");
+    	for (i = 0; i < ROWS; i++) {
+    		System.out.print("| ");
+    		for (j = 0; j < COLUMNS; j++) {
+    			if (boardPositions[j][i] != -1) {
+    				System.out.print(boardPositions[j][i] + "  ");
+    			}
+    			else {
+    				System.out.print(boardPositions[j][i] + " ");
+    			}
+    		}
+    		System.out.print("|");
+    		System.out.println();
+    	}
     }
     
     private int movingLogic(String blockType) {
