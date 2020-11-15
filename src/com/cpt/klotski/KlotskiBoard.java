@@ -10,6 +10,7 @@ import java.awt.Point;
 public class KlotskiBoard {      
     private static KlotskiBlock[] blocks;
     private static int[][] boardPositions;
+    private UndoStack undoStack;
     
     private final int ROWS = 5;
     private final int COLUMNS = 4;
@@ -74,6 +75,26 @@ public class KlotskiBoard {
         boardPositions[COLUMN_TWO / 100][ROW_FIVE / 100] = EMPTY_SPACE;
         boardPositions[COLUMN_THREE / 100][ROW_FIVE / 100] = EMPTY_SPACE;
         printBoardPositions();
+    }
+    
+    /**
+     * Undo previous move
+     */
+    public void undo() {
+    	try {
+    		// TO DO get from other project
+    	}
+    	catch (Exception e) {
+    		System.out.println("Stack is empty..." + e);
+    	}
+    }
+    
+    /**
+     * 
+     * @return the stack containing undo moves
+     */
+    public UndoStack getUndoStack() {
+    	return undoStack;
     }
     
     /**

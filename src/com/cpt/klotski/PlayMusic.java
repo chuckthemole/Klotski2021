@@ -24,9 +24,11 @@ public class PlayMusic {
 	private static MediaPlayer mediaPlayer;
 	private static Media slide = initBlockSlide();
 	private static MediaPlayer mp = new MediaPlayer(slide);
+	private static boolean musicIsPlaying;
 	
 	public static void playMusic(String filePath) {
 		try {
+			musicIsPlaying = true;
 			hit = new Media(new File(filePath).toURI().toString());
 			mediaPlayer = new MediaPlayer(hit);
 			mediaPlayer.play();
@@ -50,9 +52,9 @@ public class PlayMusic {
 	
 	public static void stop() {
 		try {
-		mediaPlayer.stop();
-		System.out.println("Music Stopped....");
-	
+			mediaPlayer.stop();
+			System.out.println("Music Stopped....");
+			musicIsPlaying = false;
 		}
 		catch(Exception e) {
 			System.out.println(e);
@@ -61,9 +63,9 @@ public class PlayMusic {
 	
 	public static void play() {
 		try {
-		mediaPlayer.play();
-		System.out.println("Music Started....");
-	
+			mediaPlayer.play();
+			System.out.println("Music Started....");
+			musicIsPlaying = true;
 		}
 		catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Can't Stop Music");
@@ -77,5 +79,9 @@ public class PlayMusic {
 	
 	public static void stopSlide() {
 		mp.stop();
+	}
+	
+	public static boolean getMusicIsPlaying() {
+		return musicIsPlaying;
 	}
 }

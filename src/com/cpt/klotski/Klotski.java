@@ -1,13 +1,16 @@
 package com.cpt.klotski;
 
-import com.sun.javafx.geom.Vec2d;
-
-
+import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-
+import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -19,16 +22,24 @@ import javafx.stage.Stage;
 public class Klotski extends Application {
 	private final String musicPath = "//Music//song2.MP3";
 	private static KlotskiBoard mainBoard;
+	private Stage stage;
 	private Scene scene;
     private BlockDrag[] blockDrag;
     private static boolean mouseActive;
+    private static int solveCalled = 0;
+	private static SequentialTransition seqTransition, s;
 	
     @Override
-    public void start(Stage s) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
+    	startGame(primaryStage);
+    }
+    
+    public void startGame(Stage s) {
+    	stage = s;
         System.out.print("Start called...");
         enableMouse();
     	//playMusic(musicPath);
-        buildStage(s); 
+        buildStage(stage); 
         addListeners();
     }
     
@@ -53,11 +64,16 @@ public class Klotski extends Application {
     	}
         
         Pane mainPane = new Pane();
+        Pane blocksAndButtonsPane = new Pane();
+        blocksAndButtonsPane.getChildren().add(blocksPane);
+        blocksAndButtonsPane.getChildren().add(0, buildButtonsPane());
         final String cssDefault = "-fx-border-color: blue;\n" + "-fx-border-width: 20;\n";
         mainPane.setStyle(cssDefault);
-        mainPane.getChildren().add(blocksPane);
+        mainPane.getChildren().add(blocksAndButtonsPane);
         blocksPane.setLayoutX(40);
         blocksPane.setLayoutY(40);
+        
+        //mainPane.getChildren().add(0, buildButtonsPane());
         
     	Group root = new Group(mainPane);
     	scene = new Scene(root);
@@ -69,6 +85,19 @@ public class Klotski extends Application {
         stage.centerOnScreen();
         stage.sizeToScene();
         stage.show(); 
+    }
+    
+    private Pane buildButtonsPane() {
+    	Buttons buttons = new Buttons();
+        Pane p = new Pane();
+    	
+    	p.setPrefSize(400, 100);
+        p.relocate(0, 520);
+        p.setBackground(new Background(new BackgroundFill(Color.BISQUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        p.getChildren().add(buttons.getHBox());
+        buttons.getHBox().relocate(50, 35);
+        
+        return p;
     }
 
     private void addListeners() {
@@ -83,12 +112,76 @@ public class Klotski extends Application {
     	return mouseActive;
     }
     
-    public void disableMouse() {
+    public static void disableMouse() {
     	mouseActive = false;
     }
     
-    public void enableMouse() {
+    public static void enableMouse() {
     	mouseActive = true;
+    }
+    
+    public void music() {
+    	if (PlayMusic.getMusicIsPlaying()) {
+    		PlayMusic.stop();
+    	}
+    	else {
+    		PlayMusic.play();
+    	}
+    }
+    
+    public void quit() {
+        Platform.exit();
+        System.exit(0);
+    }
+    
+    public void solve() {
+    	cleanup();
+    	solveCalled = 1;
+
+    	Platform.runLater(() -> {
+            // fxThread is the JavaFX Application Thread after this call
+    		try {
+        		stage.close();
+    		} catch (Exception e) {
+    			System.out.println("Exception: " + e);
+    		}
+            startGame(stage);
+        }); 
+    }
+    
+    public void restart() {
+    	cleanup();  
+    	solveCalled = 0;
+    	try {
+    		stage.close();
+        }
+        catch (Exception e) {
+        	System.out.print("Error closing stage...");
+        }   
+    	enableMouse();
+        startGame(stage);    
+    }
+    
+    public void undo() {
+    	if(mouseActive) {
+        	mainBoard.undo();
+        	mainBoard.getUndoStack().printUndoStack();
+    	}
+    }
+    
+    private void cleanup() {
+    	try {
+    		seqTransition.stop();
+    	}
+    	catch (Exception e) {
+    		System.out.println(e);
+    	}
+    	try {
+    		s.stop();
+    	}
+    	catch (Exception e) {
+    		System.out.println(e);
+    	}
     }
     
     public static void main(String[] args) {
