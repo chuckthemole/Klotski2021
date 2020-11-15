@@ -85,6 +85,14 @@ public class KlotskiBoard {
     }
     
     /**
+     * 
+     * @return 2d array of each block's position on board
+     */
+    public int[][] getBoardPositionS() {
+    	return boardPositions;
+    }
+    
+    /**
      * Moves a Klotski Block, b, to a position, p, if the move is a legal move. 
      * 
      * @param b block to have position set

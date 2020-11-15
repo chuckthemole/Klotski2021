@@ -24,6 +24,8 @@ public class BlockDrag {
 	final int LEFT_WALL = 0;
 	final int BOTTOM_WALL = 500;
 	final int TOP_WALL = 0;
+	final int RIGHT_BORDER_FIRST_COLUMN = 100;
+	final int BOTTOM_BORDER_FIRST_ROW = 100;
 	
 	private int x;
 	private int y;
@@ -34,11 +36,7 @@ public class BlockDrag {
      * @param klotskiBoard is the current KlotskiBoard object
      */
     BlockDrag(KlotskiBlock b, KlotskiBoard klotskiBoard, boolean mouseActive) {
-    	currentBoard = klotskiBoard;
-    	x = 1;
-    	y = 1;
         b.getRec().setCursor(Cursor.HAND);
-        Point oldPosition = b.getPosition();
         
         b.getRec().xProperty().addListener((Observable, oldValue, newValue) -> {
             //System.out.println("X position changed from <" + oldValue + "> to <" + newValue + ">");
@@ -49,50 +47,38 @@ public class BlockDrag {
             //System.out.println("Y position changed from <" + oldValue + "> to <" + newValue + ">");
             y = newValue.intValue();
         });
-        
 
         b.getRec().setOnMouseDragged(e -> { 
-        	double offsetX = b.getWidth() / 2;
-        	double offsetY = b.getHeight() / 2;
-            Rectangle bound = new Rectangle(400,500);
-    		Point2D currentPointer = new Point2D(e.getX(), e.getY());
-    		Point2D topLeft = new Point2D(e.getX() - offsetX, e.getY() - offsetY);
-    		Point2D bottomRight = new Point2D(e.getX() + offsetX, e.getY() + offsetY);
-    		
-
+            double blockXBorder = RIGHT_WALL - b.getRec().getWidth();
+        	double blockYBorder = BOTTOM_WALL - b.getRec().getHeight();
+    		//Point2D currentPointer = new Point2D(e.getX(), e.getY());
+    		//Rectangle bound = new Rectangle(400,500);
 
         	b.getRec().toFront();
 
-        	if (
-        			bound.getBoundsInLocal().contains(topLeft) && 
-        			bound.getBoundsInLocal().contains(bottomRight)) {
-        		b.getRec().setX(currentPointer.getX() - offsetX);
-        		b.getRec().setY(currentPointer.getY() - offsetY);    
-        		//System.out.println("Dragging Block " + b.getBlockIdentifier());
-
+        	if (mouseActive) {       	
+	        	// Right and left border walls
+        		if (b.getRec().getX() >= blockXBorder && e.getX() > blockXBorder) {
+	        		b.getRec().setX(blockXBorder);
+	        	}
+	        	else if (b.getRec().getX() <= LEFT_WALL && e.getX() < RIGHT_BORDER_FIRST_COLUMN) {
+	        		b.getRec().setX(LEFT_WALL);
+	        	}
+	        	else {
+	        		b.getRec().setX(e.getX() - (b.getRec().getWidth() / 2));
+	        	}
+	        	
+	        	// Top and bottom border walls
+	        	if (b.getRec().getY() >= blockYBorder && e.getY() > blockYBorder) {
+	        		b.getRec().setY(blockYBorder);
+	        	}
+	        	else if (b.getRec().getY() <= TOP_WALL && e.getY() < BOTTOM_BORDER_FIRST_ROW) {
+	        		b.getRec().setY(TOP_WALL);
+	        	}
+	        	else {
+	        		b.getRec().setY(e.getY() - (b.getRec().getHeight() / 2));  
+	        	}
         	}
-        	
-        	/*
-            Rectangle bound = new Rectangle(400,500);
-        	
-        	if (mouseActive) {  
-        		Point2D currentPointer = new Point2D(e.getX(), e.getY());
-
-        		if (!(x > 0 && x < 300 && y > 0 && y < 400)) {
-        			b.getRec().setX(0);
-        		}
-                if(x > 0 && x < 300 && y > 0 && y < 400){
-		            if (x >= 0 && x + b.getWidth() < bound.getWidth()){
-		                b.getRec().setX(currentPointer.getX() - b.getWidth() / 2);
-		            }
-	                    
-	                if (y >= 0 && x + b.getHeight() <= bound.getHeight()){
-	                    b.getRec().setY(currentPointer.getY() - b.getHeight() / 2);
-	                }
-                }
-
-        	}
-        	*/
         	e.consume();
         });
         
@@ -101,6 +87,7 @@ public class BlockDrag {
         	x = (int) b.getPosition().getX();
         	y = (int) b.getPosition().getY();
         	b.getRec().toBack();
+        	klotskiBoard.printBoardPositions();
         });
     }
     
@@ -110,24 +97,5 @@ public class BlockDrag {
     
     public void setY(int value) {
     	y = value;
-    }
-    
-    private boolean checkCollision(KlotskiBlock block) {   
-    	boolean collision = true;
-    	
-        for (KlotskiBlock b : currentBoard.getBlocks()) {
-            // If one block is on the left side of the other block or if one block is above the other block
-            if ((block.getBlockPosition().getX() > b.getBlockPosition().getX() + b.getWidth() ||
-            		b.getBlockPosition().getX() > block.getBlockPosition().getX() + block.getWidth()) ||
-            		(block.getBlockPosition().getY() > b.getBlockPosition().getY() + b.getHeight() ||
-            				b.getBlockPosition().getY() > block.getBlockPosition().getY() + block.getHeight())) {
-            	collision = false;
-            }  
-            else {
-            	System.out.println("Collision with block " + b.getBlockIdentifier());
-            	return true;
-            }
-        }
-        return collision;
     }
 }

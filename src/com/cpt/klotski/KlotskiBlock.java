@@ -19,6 +19,7 @@ public class KlotskiBlock {
 	private int height;
 	private int blockColumn;
 	private int blockRow;
+	private final int DIVISOR_ROWS_COLUMNS = 100;
 	
 	/**
 	 * 
@@ -31,6 +32,8 @@ public class KlotskiBlock {
 		blockIdentifier = numberOfBlocks;
 		numberOfBlocks++;
 
+		blockColumn = (int) p.getX() / DIVISOR_ROWS_COLUMNS;
+		blockRow = (int) p.getY() / DIVISOR_ROWS_COLUMNS;
 		
 		switch (type) {
 		case "Small Square":
@@ -64,6 +67,9 @@ public class KlotskiBlock {
 		position = new Point(x, y);
 		blockIdentifier = numberOfBlocks;
 		numberOfBlocks++;
+		
+		blockColumn = x / DIVISOR_ROWS_COLUMNS;
+		blockRow = y / DIVISOR_ROWS_COLUMNS;
 		
 		switch (type) {
 		case "Small Square":

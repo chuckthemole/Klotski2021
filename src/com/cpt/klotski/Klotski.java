@@ -26,7 +26,6 @@ public class Klotski extends Application {
     @Override
     public void start(Stage s) throws Exception{
         System.out.print("Start called...");
-        mainBoard = new KlotskiBoard();
         enableMouse();
     	//playMusic(musicPath);
         buildStage(s); 
