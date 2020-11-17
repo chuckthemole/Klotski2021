@@ -56,25 +56,18 @@ public class Klotski extends Application {
     }
     
     private void buildStage(Stage stage) {
-        Pane blocksPane = new Pane();
-
-    	mainBoard = new KlotskiBoard();
-    	for (KlotskiBlock block : mainBoard.getBlocks()) {
-    		blocksPane.getChildren().add(block.getRec());
-    	}
-        
-        Pane mainPane = new Pane();
+    	Pane mainPane = new Pane();
         Pane blocksAndButtonsPane = new Pane();
-        blocksAndButtonsPane.getChildren().add(blocksPane);
+        
+        blocksAndButtonsPane.getChildren().add(buildBlocksPane());
         blocksAndButtonsPane.getChildren().add(0, buildButtonsPane());
+        blocksAndButtonsPane.setLayoutX(40);
+        blocksAndButtonsPane.setLayoutY(40);
+        
         final String cssDefault = "-fx-border-color: blue;\n" + "-fx-border-width: 20;\n";
         mainPane.setStyle(cssDefault);
         mainPane.getChildren().add(blocksAndButtonsPane);
-        blocksPane.setLayoutX(40);
-        blocksPane.setLayoutY(40);
-        
-        //mainPane.getChildren().add(0, buildButtonsPane());
-        
+                
     	Group root = new Group(mainPane);
     	scene = new Scene(root);
         scene.setFill(Paint.valueOf("Black"));
@@ -85,6 +78,17 @@ public class Klotski extends Application {
         stage.centerOnScreen();
         stage.sizeToScene();
         stage.show(); 
+    }
+    
+    private Pane buildBlocksPane() {
+    	Pane blocksPane = new Pane();
+
+    	mainBoard = new KlotskiBoard();
+    	for (KlotskiBlock block : mainBoard.getBlocks()) {
+    		blocksPane.getChildren().add(block.getRec());
+    	}
+    	
+    	return blocksPane;
     }
     
     private Pane buildButtonsPane() {
