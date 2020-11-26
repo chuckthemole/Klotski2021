@@ -125,7 +125,7 @@ public class KlotskiBoard {
     	
     	//Maybe call method setBoardPositions
     	
-    	flag = movingLogic(b.getBlockType());
+    	flag = movingLogic(b);
     	
     	if (flag == 1) {
     		
@@ -137,6 +137,23 @@ public class KlotskiBoard {
     	}
     	
     	return flag;
+    }
+    
+    private int movingLogic(KlotskiBlock block) {
+    	switch (block.getBlockType()) {
+    	case "Small Square":
+    		break;
+    	case "Vertical Rectangle":
+    		break;
+    	case "Horizontal Rectangle":
+    		break;
+    	case "Big Square":
+    		break;
+    	default:
+    		System.out.println("No block type!");
+    	}
+    	
+    	return -1;
     }
     
     /**
@@ -159,23 +176,5 @@ public class KlotskiBoard {
     		System.out.print("|");
     		System.out.println();
     	}
-    }
-    
-    private int movingLogic(String blockType) {
-    	
-    	switch (blockType) {
-    	case "Small Square":
-    		break;
-    	case "Vertical Rectangle":
-    		break;
-    	case "Horizontal Rectangle":
-    		break;
-    	case "Big Square":
-    		break;
-    	default:
-    		System.out.println("No block type!");
-    	}
-    	
-    	return -1;
     }
 }

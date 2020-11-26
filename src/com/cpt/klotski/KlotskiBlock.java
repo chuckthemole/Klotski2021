@@ -189,8 +189,8 @@ public class KlotskiBlock {
 	 */
 	public void setPosition(int x, int y) {
 		position = new Point(x, y);
-		this.getRec().setX(x);
-		this.getRec().setY(y);
+		block.setX(x);
+		block.setY(y);
 	}
 	
 	/**
