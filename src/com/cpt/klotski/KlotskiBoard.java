@@ -246,9 +246,15 @@ public class KlotskiBoard {
                     newLocation = boardPoints[i][j];
                     newLocationX = i;
                     newLocationY = j;
-                    b.setPosition(newLocation);
                 }
             }
+        }
+
+        if (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE) {
+            b.setPosition(newLocation);
+            blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
+            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
+            flag = 1;
         }
 
         System.out.println("\nLocation = " + (int) newLocation.getX() / 100 + " : "
@@ -256,18 +262,7 @@ public class KlotskiBoard {
         System.out.println("\nBlock in space: "
                 + blockPositions[(int) newLocation.getX() / 100][(int) newLocation.getY() / 100]);
 
-        // Check to make sure new location is empty and there is a clear path to that space, if so
-        // update board.
-        if (blockPositions[(int) newLocation.getX() / 100][(int) newLocation.getY() / 100] == -1) {
-            if (clearPathMovingLogic((int) (oldX / 100), (int) (oldY / 100), newLocationX,
-                    newLocationY, b.getBlockIdentifier())) {
-                blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
-                blockPositions[(int) newLocation.getX() / 100][(int) newLocation.getY() / 100] =
-                        b.getBlockIdentifier();
-                b.setPosition(newLocation);
-                flag = 1;
-            }
-        }
+
         return flag;
     }
 
