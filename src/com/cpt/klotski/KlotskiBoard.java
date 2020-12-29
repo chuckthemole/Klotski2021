@@ -165,15 +165,15 @@ public class KlotskiBoard {
      * @param p point to set the block
      * @return
      */
-    public int setBlockPosition(KlotskiBlock b, Point p) {
-        int flag = -1;
+    public boolean setBlockPosition(KlotskiBlock b, Point p) {
+        boolean flag = false;
 
         // Maybe call method setBoardPositions
 
         flag = movingLogic(b, p);
 
-        if (flag == 1) {
-        } else if (flag == -1) {
+        if (flag == true) {
+        } else if (flag == false) {
             b.setPosition(b.getPosition());
             System.out.println("Block identifier: " + b.getBlockIdentifier());
         } else {
@@ -203,78 +203,46 @@ public class KlotskiBoard {
         }
     }
 
-    private int movingLogic(KlotskiBlock block, Point p) {
-        double oldX = block.getPosition().getX();
-        double oldY = block.getPosition().getY();
-        int canMove = -1;
-
+    private boolean movingLogic(KlotskiBlock block, Point p) {
         switch (block.getBlockType()) {
             case "Small Square":
-                canMove = movingLogicSmallSquare(p.getX(), p.getY(), oldX, oldY, block);
-                break;
+                return movingLogicSmallSquare(p, block);
             case "Vertical Rectangle":
-                canMove = movingLogicVerticalRectangle(p.getX(), p.getY(), oldX, oldY, block);
-                break;
+                return movingLogicVerticalRectangle(p, block);
             case "Horizontal Rectangle":
-                break;
+                return false;
             case "Big Square":
-                break;
+                return false;
             default:
                 System.out.println("No block type!");
+                return false;
         }
-
-        System.out.println("\ncanMove = " + canMove);
-        return canMove;
     }
 
-    private int movingLogicSmallSquare(double x, double y, double oldX, double oldY,
-            KlotskiBlock b) {
-        int i, j;
-        int flag = -1;
-
-        Point location = new Point((int) x, (int) y);
-        Point newLocation = boardPoints[0][0];
-        int newLocationX = 0;
-        int newLocationY = 0;
-        double minDistance = location.distance(newLocation);
-
-        // Find the closest point to the block's drop point.
-        for (i = 0; i < 4; i++) {
-            for (j = 0; j < 5; j++) {
-                if (location.distance(boardPoints[i][j]) < minDistance &&
-                        boardPoints[i][j] != boardPoints[(int) oldX / 100][(int) oldY / 100]) {
-                    minDistance = location.distance(boardPoints[i][j]);
-                    newLocation = boardPoints[i][j];
-                    newLocationX = i;
-                    newLocationY = j;
-                }
-            }
-        }
-
-        if (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE) {
-            b.setPosition(newLocation);
-            blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
-            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
-            flag = 1;
-        }
-
-        System.out.println("\nLocation = " + (int) newLocation.getX() / 100 + " : "
-                + (int) newLocation.getY() / 100);
-        System.out.println("\nBlock in space: "
-                + blockPositions[(int) newLocation.getX() / 100][(int) newLocation.getY() / 100]);
-
-        return flag;
-    }
-
-    public int movingLogicVerticalRectangle(double x, double y, double oldX, double oldY,
-            KlotskiBlock b) {
-        int flag = -1;
-        Point location = new Point((int) x, (int) y);
-        Point newLocation = closestPointAtDrop(location, oldX, oldY);
+    private boolean movingLogicSmallSquare(Point p, KlotskiBlock b) {
+        int oldX = (int) b.getPosition().getX() / 100;
+        int oldY = (int) b.getPosition().getY() / 100;
+        Point newLocation = closestPointAtDrop(new Point((int) p.getX(), (int) p.getY()));
         int newLocationX = (int) newLocation.getX();
         int newLocationY = (int) newLocation.getY();
 
-        // Check to make sure new location is empty
+        if (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE) {
+            b.setPosition(boardPoints[newLocationX][newLocationY]);
+            blockPositions[oldX][oldY] = EMPTY_SPACE;
+            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean movingLogicVerticalRectangle(Point p, KlotskiBlock b) {
+        int oldX = (int) b.getPosition().getX() / 100;
+        int oldY = (int) b.getPosition().getY() / 100;
+        Point newLocation = closestPointAtDrop(new Point((int) p.getX(), (int) p.getY()));
+        int newLocationX = (int) newLocation.getX();
+        int newLocationY = (int) newLocation.getY();
+
         if ((blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
                 blockPositions[newLocationX][newLocationY + 1] == b.getBlockIdentifier())
                 ||
@@ -285,17 +253,17 @@ public class KlotskiBoard {
                         blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE)) {
 
             b.setPosition(boardPoints[newLocationX][newLocationY]);
-            blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
-            blockPositions[(int) (oldX / 100)][(int) (oldY / 100) + 1] = EMPTY_SPACE;
+            blockPositions[oldX][oldY] = EMPTY_SPACE;
+            blockPositions[oldX][oldY + 1] = EMPTY_SPACE;
             blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
             blockPositions[newLocationX][newLocationY + 1] = b.getBlockIdentifier();
-            flag = 1;
+            return true;
         }
 
-        return flag;
+        return false;
     }
 
-    private Point closestPointAtDrop(Point location, double oldX, double oldY) {
+    private Point closestPointAtDrop(Point location) {
         int i, j;
         Point newLocation = boardPoints[0][0];
         double minDistance = location.distance(newLocation);
@@ -304,8 +272,7 @@ public class KlotskiBoard {
 
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 5; j++) {
-                if (location.distance(boardPoints[i][j]) < minDistance &&
-                        boardPoints[i][j] != boardPoints[(int) oldX / 100][(int) oldY / 100]) {
+                if (location.distance(boardPoints[i][j]) < minDistance) {
                     minDistance = location.distance(boardPoints[i][j]);
                     newLocation = boardPoints[i][j];
                     newLocationX = i;
