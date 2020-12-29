@@ -268,30 +268,13 @@ public class KlotskiBoard {
 
     public int movingLogicVerticalRectangle(double x, double y, double oldX, double oldY,
             KlotskiBlock b) {
-        int i, j;
         int flag = -1;
         Point location = new Point((int) x, (int) y);
-        Point newLocation = boardPoints[0][0];
-        int newLocationX = 0;
-        int newLocationY = 0;
-        double minDistance = location.distance(newLocation);
+        Point newLocation = closestPointAtDrop(location, oldX, oldY);
+        int newLocationX = (int) newLocation.getX();
+        int newLocationY = (int) newLocation.getY();
 
-        // Find the closest point to the block's drop point.
-        for (i = 0; i < 4; i++) {
-            for (j = 0; j < 5; j++) {
-                if (location.distance(boardPoints[i][j]) < minDistance &&
-                        boardPoints[i][j] != boardPoints[(int) oldX / 100][(int) oldY
-                                / 100]) {
-                    minDistance = location.distance(boardPoints[i][j]);
-                    newLocation = boardPoints[i][j];
-                    newLocationX = i;
-                    newLocationY = j;
-                }
-            }
-        }
-
-        // Check to make sure new location is empty and there is a clear path to that space, if so
-        // update board.
+        // Check to make sure new location is empty
         if ((blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
                 blockPositions[newLocationX][newLocationY + 1] == b.getBlockIdentifier())
                 ||
@@ -300,20 +283,38 @@ public class KlotskiBoard {
                 ||
                 (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
                         blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE)) {
-            // System.out.println("Clear Path: " + clearPathMovingLogic(locationX, locationY,
-            // newLocationX, newLocationY));
-            // if (clearPathMovingLogic((int) (oldX / 100), (int) (oldY / 100), newLocationX,
-            // newLocationY, b.getBlockIdentifier())) {
-            b.setPosition(newLocation);
+
+            b.setPosition(boardPoints[newLocationX][newLocationY]);
             blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
             blockPositions[(int) (oldX / 100)][(int) (oldY / 100) + 1] = EMPTY_SPACE;
             blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
             blockPositions[newLocationX][newLocationY + 1] = b.getBlockIdentifier();
             flag = 1;
-            // }
         }
 
         return flag;
+    }
+
+    private Point closestPointAtDrop(Point location, double oldX, double oldY) {
+        int i, j;
+        Point newLocation = boardPoints[0][0];
+        double minDistance = location.distance(newLocation);
+        int newLocationX = 0;
+        int newLocationY = 0;
+
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 5; j++) {
+                if (location.distance(boardPoints[i][j]) < minDistance &&
+                        boardPoints[i][j] != boardPoints[(int) oldX / 100][(int) oldY / 100]) {
+                    minDistance = location.distance(boardPoints[i][j]);
+                    newLocation = boardPoints[i][j];
+                    newLocationX = i;
+                    newLocationY = j;
+                }
+            }
+        }
+
+        return new Point(newLocationX, newLocationY);
     }
 
     /**
