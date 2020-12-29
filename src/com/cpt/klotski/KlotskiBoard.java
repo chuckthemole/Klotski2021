@@ -213,6 +213,7 @@ public class KlotskiBoard {
                 canMove = movingLogicSmallSquare(p.getX(), p.getY(), oldX, oldY, block);
                 break;
             case "Vertical Rectangle":
+                canMove = movingLogicVerticalRectangle(p.getX(), p.getY(), oldX, oldY, block);
                 break;
             case "Horizontal Rectangle":
                 break;
@@ -262,6 +263,55 @@ public class KlotskiBoard {
         System.out.println("\nBlock in space: "
                 + blockPositions[(int) newLocation.getX() / 100][(int) newLocation.getY() / 100]);
 
+        return flag;
+    }
+
+    public int movingLogicVerticalRectangle(double x, double y, double oldX, double oldY,
+            KlotskiBlock b) {
+        int i, j;
+        int flag = -1;
+        Point location = new Point((int) x, (int) y);
+        Point newLocation = boardPoints[0][0];
+        int newLocationX = 0;
+        int newLocationY = 0;
+        double minDistance = location.distance(newLocation);
+
+        // Find the closest point to the block's drop point.
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 5; j++) {
+                if (location.distance(boardPoints[i][j]) < minDistance &&
+                        boardPoints[i][j] != boardPoints[(int) oldX / 100][(int) oldY
+                                / 100]) {
+                    minDistance = location.distance(boardPoints[i][j]);
+                    newLocation = boardPoints[i][j];
+                    newLocationX = i;
+                    newLocationY = j;
+                }
+            }
+        }
+
+        // Check to make sure new location is empty and there is a clear path to that space, if so
+        // update board.
+        if ((blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                blockPositions[newLocationX][newLocationY + 1] == b.getBlockIdentifier())
+                ||
+                (blockPositions[newLocationX][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE)
+                ||
+                (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                        blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE)) {
+            // System.out.println("Clear Path: " + clearPathMovingLogic(locationX, locationY,
+            // newLocationX, newLocationY));
+            // if (clearPathMovingLogic((int) (oldX / 100), (int) (oldY / 100), newLocationX,
+            // newLocationY, b.getBlockIdentifier())) {
+            b.setPosition(newLocation);
+            blockPositions[(int) (oldX / 100)][(int) (oldY / 100)] = EMPTY_SPACE;
+            blockPositions[(int) (oldX / 100)][(int) (oldY / 100) + 1] = EMPTY_SPACE;
+            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
+            blockPositions[newLocationX][newLocationY + 1] = b.getBlockIdentifier();
+            flag = 1;
+            // }
+        }
 
         return flag;
     }
