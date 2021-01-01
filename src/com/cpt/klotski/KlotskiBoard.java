@@ -210,9 +210,9 @@ public class KlotskiBoard {
             case "Vertical Rectangle":
                 return movingLogicVerticalRectangle(p, block);
             case "Horizontal Rectangle":
-                return false;
+                return movingLogicHorizontalRectangle(p, block);
             case "Big Square":
-                return false;
+                return movingLogicBigSquare(p, block);
             default:
                 System.out.println("No block type!");
                 return false;
@@ -257,6 +257,77 @@ public class KlotskiBoard {
             blockPositions[oldX][oldY + 1] = EMPTY_SPACE;
             blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
             blockPositions[newLocationX][newLocationY + 1] = b.getBlockIdentifier();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean movingLogicHorizontalRectangle(Point p, KlotskiBlock b) {
+        int oldX = (int) b.getPosition().getX() / 100;
+        int oldY = (int) b.getPosition().getY() / 100;
+        Point newLocation = closestPointAtDrop(new Point((int) p.getX(), (int) p.getY()));
+        int newLocationX = (int) newLocation.getX();
+        int newLocationY = (int) newLocation.getY();
+
+        if ((blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                blockPositions[newLocationX + 1][newLocationY] == b.getBlockIdentifier())
+                ||
+                (blockPositions[newLocationX][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE)
+                ||
+                (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                        blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE)) {
+
+            b.setPosition(boardPoints[newLocationX][newLocationY]);
+            blockPositions[oldX][oldY] = EMPTY_SPACE;
+            blockPositions[oldX + 1][oldY] = EMPTY_SPACE;
+            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
+            blockPositions[newLocationX + 1][newLocationY] = b.getBlockIdentifier();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean movingLogicBigSquare(Point p, KlotskiBlock b) {
+        int oldX = (int) b.getPosition().getX() / 100;
+        int oldY = (int) b.getPosition().getY() / 100;
+        Point newLocation = closestPointAtDrop(new Point((int) p.getX(), (int) p.getY()));
+        int newLocationX = (int) newLocation.getX();
+        int newLocationY = (int) newLocation.getY();
+
+        if ((blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE &&
+                blockPositions[newLocationX][newLocationY + 1] == b.getBlockIdentifier() &&
+                blockPositions[newLocationX + 1][newLocationY + 1] == b.getBlockIdentifier())
+                ||
+                (blockPositions[newLocationX][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX + 1][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE &&
+                        blockPositions[newLocationX + 1][newLocationY + 1] == EMPTY_SPACE)
+                ||
+                (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
+                        blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE &&
+                        blockPositions[newLocationX + 1][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX + 1][newLocationY + 1] == b
+                                .getBlockIdentifier())
+                ||
+                (blockPositions[newLocationX][newLocationY] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX][newLocationY + 1] == b.getBlockIdentifier() &&
+                        blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE &&
+                        blockPositions[newLocationX + 1][newLocationY + 1] == EMPTY_SPACE)) {
+
+            b.setPosition(boardPoints[newLocationX][newLocationY]);
+            blockPositions[oldX][oldY] = EMPTY_SPACE;
+            blockPositions[oldX][oldY + 1] = EMPTY_SPACE;
+            blockPositions[oldX + 1][oldY] = EMPTY_SPACE;
+            blockPositions[oldX + 1][oldY + 1] = EMPTY_SPACE;
+            blockPositions[newLocationX][newLocationY] = b.getBlockIdentifier();
+            blockPositions[newLocationX][newLocationY + 1] = b.getBlockIdentifier();
+            blockPositions[newLocationX + 1][newLocationY] = b.getBlockIdentifier();
+            blockPositions[newLocationX + 1][newLocationY + 1] = b.getBlockIdentifier();
+
             return true;
         }
 
