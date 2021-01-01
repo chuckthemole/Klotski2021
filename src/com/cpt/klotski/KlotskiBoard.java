@@ -159,48 +159,14 @@ public class KlotskiBoard {
     }
 
     /**
-     * Moves a Klotski Block, b, to a position, p, if the move is a legal move.
+     * Moves a Klotski Block to a position if the move is a legal.
      * 
-     * @param b block to have position set
-     * @param p point to set the block
+     * @param b block to move
+     * @param p point to move the block
      * @return
      */
     public boolean setBlockPosition(KlotskiBlock b, Point p) {
-        boolean flag = false;
-
-        // Maybe call method setBoardPositions
-
-        flag = movingLogic(b, p);
-
-        if (flag == true) {
-        } else if (flag == false) {
-            b.setPosition(b.getPosition());
-            System.out.println("Block identifier: " + b.getBlockIdentifier());
-        } else {
-        }
-
-        return flag;
-    }
-
-    /**
-     * Prints the current board positions
-     */
-    public void printBoardPositions() {
-        int i, j;
-
-        System.out.println("\nBoard Positions:");
-        for (i = 0; i < ROWS; i++) {
-            System.out.print("| ");
-            for (j = 0; j < COLUMNS; j++) {
-                if (blockPositions[j][i] != -1) {
-                    System.out.print(blockPositions[j][i] + "  ");
-                } else {
-                    System.out.print(blockPositions[j][i] + " ");
-                }
-            }
-            System.out.print("|");
-            System.out.println();
-        }
+        return movingLogic(b, p);
     }
 
     private boolean movingLogic(KlotskiBlock block, Point p) {
@@ -233,6 +199,7 @@ public class KlotskiBoard {
             return true;
         }
 
+        b.setPosition(boardPoints[oldX][oldY]);
         return false;
     }
 
@@ -260,6 +227,7 @@ public class KlotskiBoard {
             return true;
         }
 
+        b.setPosition(boardPoints[oldX][oldY]);
         return false;
     }
 
@@ -287,6 +255,7 @@ public class KlotskiBoard {
             return true;
         }
 
+        b.setPosition(boardPoints[oldX][oldY]);
         return false;
     }
 
@@ -331,6 +300,7 @@ public class KlotskiBoard {
             return true;
         }
 
+        b.setPosition(boardPoints[oldX][oldY]);
         return false;
     }
 
@@ -454,6 +424,27 @@ public class KlotskiBoard {
                 return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Prints the current board positions
+     */
+    public void printBoardPositions() {
+        int i, j;
+
+        System.out.println("\nBoard Positions:");
+        for (i = 0; i < ROWS; i++) {
+            System.out.print("| ");
+            for (j = 0; j < COLUMNS; j++) {
+                if (blockPositions[j][i] != -1) {
+                    System.out.print(blockPositions[j][i] + "  ");
+                } else {
+                    System.out.print(blockPositions[j][i] + " ");
+                }
+            }
+            System.out.print("|");
+            System.out.println();
         }
     }
 }
