@@ -329,102 +329,20 @@ public class KlotskiBoard {
      * Makes it so blocks cannot skip over other blocks. There must be a clear path for the block to
      * move to a space.
      * 
-     * @param pathX is x-coordinate of the path a block can take.
-     * @param pathY is y-coordinate of the path a block can take.
-     * @param destinationX is the x-coordinate of the destination the block is traveling.
-     * @param destinationY is the y-coordinate of the destination the block is traveling.
-     * @return a boolean value that tells if the move is legal.
      */
-    public boolean clearPathMovingLogic(int pathX, int pathY, int destinationX, int destinationY,
-            int index) {
-        boolean flag1 = false;
-        boolean flag2 = false;
+    private boolean clearPathMovingLogic(KlotskiBlock b, Point destination) {
+        if (b.getBlockType() == "Small Square") {
 
-        if (pathX == destinationX && pathY == destinationY)
-            return true;
-        else if (pathX == destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                return clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
-            else
-                return false;
-        } else if (pathX == destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == -1)
-                return clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
-            else
-                return false;
-        } else if (pathX < destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
-            else
-                flag1 = false;
+        } else if (b.getBlockType() == "Big Square") {
 
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
-            else
-                flag2 = false;
+        } else if (b.getBlockType() == "Vertical Rectangle") {
 
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
-        } else if (pathY == destinationY && pathX < destinationX) {
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                return clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
-            else
-                return false;
-        } else if (pathY == destinationY && pathX > destinationX) {
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                return clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
-            else
-                return false;
-        } else if (pathX < destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
-            else
-                flag1 = false;
+        } else if (b.getBlockType() == "Horizontal Rectangle") {
 
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
-        } else if (pathX > destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
-        } else if (pathX > destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
         } else {
-            return false;
+            System.out.println("Not a valid block!");
         }
+        return false;
     }
 
     /**
