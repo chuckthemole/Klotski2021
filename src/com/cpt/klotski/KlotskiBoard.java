@@ -337,132 +337,68 @@ public class KlotskiBoard {
         return new Point(newLocationX, newLocationY);
     }
 
-    private boolean clearPathMovingHelper(int pathX, int pathY, int destinationX, int destinationY,
-            int blockIdentifier, int offsets[], boolean isEmpty[]) {
-        if (blockPositions[pathX + offsets[0]][pathY + offsets[1]] == (isEmpty[0] ? EMPTY_SPACE
-                : blockIdentifier)
-                || blockPositions[pathX + offsets[2]][pathY
-                        + offsets[3]] == (isEmpty[0] ? EMPTY_SPACE : blockIdentifier))
-            return clearPathMoving(pathX + offsets[4], pathY + offsets[5], destinationX,
-                    destinationY, blockIdentifier);
-        else
-            return false;
-    }
-
     private boolean clearPathMoving(int pathX, int pathY, int destinationX, int destinationY,
             int blockIdentifier) {
-        boolean flag1 = false;
-        boolean flag2 = false;
 
         if (pathX == destinationX && pathY == destinationY)
             return true;
         else if (pathX == destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
-                return clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                return false;
+            return clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, 1, true, false);
         } else if (pathX == destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY - 1] == EMPTY_SPACE)
-                return clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                return false;
+            return clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, -1, true, true);
         } else if (pathX < destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
-                flag1 = clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
-                flag2 = clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
+            if (clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, 1, true, false) == false) {
+                return clearPathMovingHelper(pathX, pathY, destinationX, destinationY,
+                        blockIdentifier, 1, 0, true, false);
+            }
+            return true;
         } else if (pathY == destinationY && pathX < destinationX) {
-            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
-                return clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                return false;
+            return clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    1, 0, true, false);
         } else if (pathY == destinationY && pathX > destinationX) {
-            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
-                return clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                return false;
+            return clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    -1, 0, true, false);
         } else if (pathX < destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY - 1] == blockIdentifier)
-                flag1 = clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
-                flag2 = clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
+            if (clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, -1, true, false) == false) {
+                return clearPathMovingHelper(pathX, pathY, destinationX, destinationY,
+                        blockIdentifier, 1, 0, true, false);
+            }
+            return true;
         } else if (pathX > destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY - 1] == blockIdentifier)
-                flag1 = clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
-                flag2 = clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
+            if (clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, -1, true, false) == false) {
+                return clearPathMovingHelper(pathX, pathY, destinationX, destinationY,
+                        blockIdentifier, -1, 0, true, false);
+            }
+            return true;
         } else if (pathX > destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
-                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
-                flag1 = clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag1 = false;
-
-            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
-                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
-                flag2 = clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
-                        blockIdentifier);
-            else
-                flag2 = false;
-
-            if (flag1 == false && flag2 == false)
-                return false;
-            else
-                return true;
+            if (clearPathMovingHelper(pathX, pathY, destinationX, destinationY, blockIdentifier,
+                    0, 1, true, false) == false) {
+                return clearPathMovingHelper(pathX, pathY, destinationX, destinationY,
+                        blockIdentifier, -1, 0, true, false);
+            }
+            return true;
         } else {
             return false;
         }
+    }
+
+    private boolean clearPathMovingHelper(int pathX, int pathY, int destinationX, int destinationY,
+            int blockIdentifier, int offsetX, int offsetY, boolean isEmpty1, boolean isEmpty2) {
+        if (blockPositions[pathX + offsetX][pathY + offsetY] == (isEmpty1 ? EMPTY_SPACE
+                : blockIdentifier)
+                || blockPositions[pathX + offsetX][pathY
+                        + offsetY] == (isEmpty2 ? EMPTY_SPACE : blockIdentifier)) {
+            return clearPathMoving(pathX + offsetX, pathY + offsetY, destinationX,
+                    destinationY, blockIdentifier);
+        } else {
+            return false;
+        }
+
     }
 
     /**
