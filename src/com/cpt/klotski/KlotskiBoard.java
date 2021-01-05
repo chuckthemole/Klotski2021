@@ -41,6 +41,8 @@ public class KlotskiBoard {
     private final int EMPTY_SPACE = -1;
 
     KlotskiBoard() {
+        undoStack = new UndoStack();
+
         blocks = new KlotskiBlock[NUMBER_OF_BLOCKS];
         KlotskiBlock.setNumberOfBlocks(0);
         blocks[SMALL_SQUARE_1] = new KlotskiBlock("Small Square", COLUMN_FOUR, ROW_FIVE);
@@ -119,11 +121,16 @@ public class KlotskiBoard {
      * Undo previous move
      */
     public void undo() {
-        try {
-            // TO DO get from other project
-        } catch (Exception e) {
-            System.out.println("Stack is empty..." + e);
+        if (undoStack.getStackSize() > 0) {
+            this.setBlockPosition(undoStack.peekUndoStack().getIndex(),
+                    undoStack.peekUndoStack().getPosition());
+            this.setBlockPositions(undoStack.popUndoStack().getBoardPositions());
+            // Klotski.setMovesText();
+        } else {
+            System.out.println("Stack is empty...");
         }
+        printBoardPositions();
+
     }
 
     /**
@@ -158,6 +165,18 @@ public class KlotskiBoard {
         return boardPoints;
     }
 
+    private void setBlockPositions(int[][] positions) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                blockPositions[i][j] = positions[i][j];
+            }
+        }
+    }
+
+    private void setBlockPosition(int blockIndex, Point p) {
+        blocks[blockIndex].setPosition(p);
+    }
+
     /**
      * Moves a Klotski Block to a position if the move is a legal.
      * 
@@ -166,7 +185,13 @@ public class KlotskiBoard {
      * @return
      */
     public boolean setBlockPosition(KlotskiBlock b, Point p) {
-        return movingLogic(b, p);
+        undoStack.pushUndoStack(b.getBlockPosition(), p, b.getBlockIdentifier(), blockPositions);
+        if (movingLogic(b, p)) {
+            undoStack.printUndoStack();
+            return true;
+        }
+        undoStack.popUndoStack();
+        return false;
     }
 
     private boolean movingLogic(KlotskiBlock block, Point p) {

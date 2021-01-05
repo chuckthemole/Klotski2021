@@ -97,10 +97,15 @@ public class UndoStack {
     }
 
     public Block popUndoStack() {
-        if (stackSize > 0)
+        if (stackSize > 0) {
             stackSize--;
-        changeText = new Text("Number of moves: " + stackSize);
-        return stack.pop();
+            changeText = new Text("Number of moves: " + stackSize);
+            return stack.pop();
+        } else {
+            System.out.println("Empty Stack!");
+            return null;
+        }
+
     }
 
     public Block peekUndoStack() {
