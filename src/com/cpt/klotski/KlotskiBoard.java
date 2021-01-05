@@ -193,7 +193,7 @@ public class KlotskiBoard {
         int newLocationY = (int) newLocation.getY();
 
         if (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE) {
-            if (clearPathMovingLogic(oldX, oldY, newLocationX, newLocationY,
+            if (clearPathMoving(oldX, oldY, newLocationX, newLocationY,
                     b.getBlockIdentifier())) {
                 b.setPosition(boardPoints[newLocationX][newLocationY]);
                 blockPositions[oldX][oldY] = EMPTY_SPACE;
@@ -222,7 +222,7 @@ public class KlotskiBoard {
                 (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
                         blockPositions[newLocationX][newLocationY + 1] == EMPTY_SPACE)) {
 
-            if (clearPathMovingLogic(oldX, oldY, newLocationX, newLocationY,
+            if (clearPathMoving(oldX, oldY, newLocationX, newLocationY,
                     b.getBlockIdentifier())) {
                 b.setPosition(boardPoints[newLocationX][newLocationY]);
                 blockPositions[oldX][oldY] = EMPTY_SPACE;
@@ -253,7 +253,7 @@ public class KlotskiBoard {
                 (blockPositions[newLocationX][newLocationY] == EMPTY_SPACE &&
                         blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE)) {
 
-            if (clearPathMovingLogic(oldX, oldY, newLocationX, newLocationY,
+            if (clearPathMoving(oldX, oldY, newLocationX, newLocationY,
                     b.getBlockIdentifier())) {
                 b.setPosition(boardPoints[newLocationX][newLocationY]);
                 blockPositions[oldX][oldY] = EMPTY_SPACE;
@@ -296,7 +296,7 @@ public class KlotskiBoard {
                         blockPositions[newLocationX + 1][newLocationY] == EMPTY_SPACE &&
                         blockPositions[newLocationX + 1][newLocationY + 1] == EMPTY_SPACE)) {
 
-            if (clearPathMovingLogic(oldX, oldY, newLocationX, newLocationY,
+            if (clearPathMoving(oldX, oldY, newLocationX, newLocationY,
                     b.getBlockIdentifier())) {
                 b.setPosition(boardPoints[newLocationX][newLocationY]);
                 blockPositions[oldX][oldY] = EMPTY_SPACE;
@@ -337,64 +337,51 @@ public class KlotskiBoard {
         return new Point(newLocationX, newLocationY);
     }
 
-    private boolean clearPath(KlotskiBlock b, Point destination) {
-        int oldX = (int) b.getPosition().getX() / 100;
-        int oldY = (int) b.getPosition().getY() / 100;
-        boolean isClearPath = clearPathHelper(b, destination);
-
-        if (!isClearPath) {
-            b.setPosition(boardPoints[oldX][oldY]);
+    private boolean clearPathMovingHelper(int pathX, int pathY, int destinationX, int destinationY,
+            int blockIdentifier, int offsets[], boolean isEmpty[]) {
+        if (blockPositions[pathX + offsets[0]][pathY + offsets[1]] == (isEmpty[0] ? EMPTY_SPACE
+                : blockIdentifier)
+                || blockPositions[pathX + offsets[2]][pathY
+                        + offsets[3]] == (isEmpty[0] ? EMPTY_SPACE : blockIdentifier))
+            return clearPathMoving(pathX + offsets[4], pathY + offsets[5], destinationX,
+                    destinationY, blockIdentifier);
+        else
             return false;
-        }
-
-        return true;
     }
 
-    private boolean clearPathHelper(KlotskiBlock b, Point destination) {
-        if (b.getBlockType() == "Small Square") {
-            int xCoordinate = (int) b.getPosition().getX() / 100;
-            int yCoordinate = (int) b.getPosition().getY() / 100;
-            if (blockPositions[xCoordinate + 1][yCoordinate] == EMPTY_SPACE) {
-                b.setPosition(xCoordinate + 1, yCoordinate);
-                clearPathHelper(b, destination);
-            }
-        } else if (b.getBlockType() == "Big Square") {
-
-        } else if (b.getBlockType() == "Vertical Rectangle") {
-
-        } else if (b.getBlockType() == "Horizontal Rectangle") {
-
-        } else {
-            System.out.println("Not a valid block!");
-        }
-        return false;
-    }
-
-    private boolean clearPathMovingLogic(int pathX, int pathY, int destinationX, int destinationY,
-            int index) {
+    private boolean clearPathMoving(int pathX, int pathY, int destinationX, int destinationY,
+            int blockIdentifier) {
         boolean flag1 = false;
         boolean flag2 = false;
 
         if (pathX == destinationX && pathY == destinationY)
             return true;
         else if (pathX == destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                return clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
+                return clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 return false;
         } else if (pathX == destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == -1)
-                return clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY - 1] == EMPTY_SPACE)
+                return clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 return false;
         } else if (pathX < destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
+                flag1 = clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag1 = false;
 
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
+                flag2 = clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag2 = false;
 
@@ -403,23 +390,31 @@ public class KlotskiBoard {
             else
                 return true;
         } else if (pathY == destinationY && pathX < destinationX) {
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                return clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
+                return clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 return false;
         } else if (pathY == destinationY && pathX > destinationX) {
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                return clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
+                return clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 return false;
         } else if (pathX < destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY - 1] == blockIdentifier)
+                flag1 = clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag1 = false;
 
-            if (blockPositions[pathX + 1][pathY] == -1 || blockPositions[pathX + 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX + 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX + 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX + 1][pathY] == blockIdentifier)
+                flag2 = clearPathMoving(pathX + 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag2 = false;
 
@@ -428,13 +423,17 @@ public class KlotskiBoard {
             else
                 return true;
         } else if (pathX > destinationX && pathY > destinationY) {
-            if (blockPositions[pathX][pathY - 1] == -1 || blockPositions[pathX][pathY - 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY - 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY - 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY - 1] == blockIdentifier)
+                flag1 = clearPathMoving(pathX, pathY - 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag1 = false;
 
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
+                flag2 = clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag2 = false;
 
@@ -443,13 +442,17 @@ public class KlotskiBoard {
             else
                 return true;
         } else if (pathX > destinationX && pathY < destinationY) {
-            if (blockPositions[pathX][pathY + 1] == -1 || blockPositions[pathX][pathY + 1] == index)
-                flag1 = clearPathMovingLogic(pathX, pathY + 1, destinationX, destinationY, index);
+            if (blockPositions[pathX][pathY + 1] == EMPTY_SPACE
+                    || blockPositions[pathX][pathY + 1] == blockIdentifier)
+                flag1 = clearPathMoving(pathX, pathY + 1, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag1 = false;
 
-            if (blockPositions[pathX - 1][pathY] == -1 || blockPositions[pathX - 1][pathY] == index)
-                flag2 = clearPathMovingLogic(pathX - 1, pathY, destinationX, destinationY, index);
+            if (blockPositions[pathX - 1][pathY] == EMPTY_SPACE
+                    || blockPositions[pathX - 1][pathY] == blockIdentifier)
+                flag2 = clearPathMoving(pathX - 1, pathY, destinationX, destinationY,
+                        blockIdentifier);
             else
                 flag2 = false;
 
