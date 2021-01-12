@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -36,7 +37,7 @@ public class Klotski extends Application {
 
     public void startGame(Stage s) {
         stage = s;
-        System.out.print("Start called...");
+        System.out.println("Start called...");
         enableMouse();
         // playMusic(musicPath);
         buildStage(stage);
@@ -152,16 +153,19 @@ public class Klotski extends Application {
         });
     }
 
-    public void restart() {
+    public void restart(Button restart) {
         cleanup();
         solveCalled = 0;
-        try {
-            stage.close();
-        } catch (Exception e) {
-            System.out.print("Error closing stage...");
-        }
         enableMouse();
-        startGame(stage);
+        Platform.runLater(() -> {
+            try {
+                stage = (Stage) restart.getScene().getWindow();
+                stage.close();
+                new Klotski().start(new Stage());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        });
     }
 
     public void undo() {

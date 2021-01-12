@@ -1,6 +1,5 @@
 package com.cpt.klotski;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -67,7 +66,7 @@ public class Buttons extends Klotski {
         restart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                restart();
+                restart(restart);
             }
         });
 
