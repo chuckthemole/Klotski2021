@@ -187,6 +187,7 @@ public class KlotskiBoard {
     public boolean setBlockPosition(KlotskiBlock b, Point p) {
         undoStack.pushUndoStack(b.getBlockPosition(), p, b.getBlockIdentifier(), blockPositions);
         if (movingLogic(b, p)) {
+            PlayMusic.playSlide();
             undoStack.printUndoStack();
             return true;
         }

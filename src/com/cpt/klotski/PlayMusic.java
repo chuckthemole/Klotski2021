@@ -1,6 +1,5 @@
 package com.cpt.klotski;
 
-import java.io.File;
 import java.net.URISyntaxException;
 // import javax.sound.sampled.AudioSystem;
 // import javax.sound.sampled.Clip;
@@ -21,8 +20,8 @@ import javafx.scene.media.MediaPlayer;
 public class PlayMusic {
     private static Media hit = null;
     private static MediaPlayer mediaPlayer;
-    // private static Media slide = initBlockSlide();
-    // private static MediaPlayer mp = new MediaPlayer(slide);
+    private static Media slide = initBlockSlide();
+    private static MediaPlayer mp = new MediaPlayer(slide);
     private static boolean musicIsPlaying;
 
     public static void playMusic(String filePath) {
@@ -40,10 +39,12 @@ public class PlayMusic {
     public static Media initBlockSlide() {
         try {
             if (OperatingSystem.isMac() || OperatingSystem.isUnix()) {
-                return new Media(new File("Music//slide.MP3").toURI().toString());
+                return new Media(
+                        PlayMusic.class.getResource("/music/slide.MP3").toURI().toString());
             }
             if (OperatingSystem.isWindows()) {
-                return new Media(new File("Music\\slide.MP3").toURI().toString());
+                return new Media(
+                        PlayMusic.class.getResource("\\music\\slide.MP3").toURI().toString());
 
             } else
                 return null;
@@ -75,11 +76,11 @@ public class PlayMusic {
 
     public static void playSlide() {
         System.out.println("Block Sliding...");
-        // mp.play();
+        mp.play();
     }
 
     public static void stopSlide() {
-        // mp.stop();
+        mp.stop();
     }
 
     public static boolean getMusicIsPlaying() {

@@ -49,6 +49,7 @@ public class BlockDrag {
         });
 
         b.getRec().setOnMouseDragged(e -> {
+            PlayMusic.stopSlide();
             double blockXBorder = RIGHT_WALL - b.getRec().getWidth();
             double blockYBorder = BOTTOM_WALL - b.getRec().getHeight();
             // Point2D currentPointer = new Point2D(e.getX(), e.getY());
