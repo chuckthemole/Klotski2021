@@ -38,18 +38,10 @@ public class PlayMusic {
 
     public static Media initBlockSlide() {
         try {
-            if (OperatingSystem.isMac() || OperatingSystem.isUnix()) {
-                return new Media(
-                        PlayMusic.class.getResource("/music/slide.MP3").toURI().toString());
-            }
-            if (OperatingSystem.isWindows()) {
-                return new Media(
-                        PlayMusic.class.getResource("\\music\\slide.MP3").toURI().toString());
-
-            } else
-                return null;
-        } catch (Exception e) {
-            System.out.println(e);
+            return new Media(
+                    PlayMusic.class.getResource("/music/slide.MP3").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
         return null;
     }

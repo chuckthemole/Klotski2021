@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  *
  */
 public class Klotski extends Application {
-    private String musicPath = "/music/song2.MP3";
+    private final String musicPath = "/music/song2.MP3";
     private static KlotskiBoard mainBoard;
     private Stage stage;
     private Scene scene;
@@ -41,18 +41,7 @@ public class Klotski extends Application {
         enableMouse();
         buildStage(stage);
         addListeners();
-        playMusic(musicPath);
-    }
-
-    private static void playMusic(String s) {
-        if (OperatingSystem.isWindows()) {
-            s.replace('/', '\\');
-        }
-        try {
-            PlayMusic.playMusic(s);
-        } catch (Exception e) {
-            System.out.print(e);
-        }
+        PlayMusic.playMusic(musicPath);
     }
 
     private void buildStage(Stage stage) {
